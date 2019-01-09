@@ -139,4 +139,13 @@ class plgSystemFuturePublish extends JPlugin
         
         return;
     }
+    
+    public function onBeforeRender()
+	{
+		$document = JFactory::getDocument();
+        
+        #$document->addStyleSheet('/css/admin-adjust.css');
+        
+        $document->addScript('/plugins/system/futurepublish/js/future-publish.js');
+	}
 }
