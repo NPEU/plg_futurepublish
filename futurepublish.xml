@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" version="3.2.0">
+
+    <name>PLG_SYSTEM_FUTUREPUBLISH</name>
+    <author>Andy Kirk</author>
+    <authorEmail>andy.kirk@npeu.ox.ac.uk</authorEmail>
+    <authorUrl>https://www.npeu.ox.ac.uk</authorUrl>
+    <creationDate>August 2018</creationDate>
+    <copyright>(C) NPEU 2018</copyright>
+    <license>MIT License; see LICENSE.md</license>
+
+    <!--  The version string is recorded in the components table -->
+    <version>1.0.0</version>
+    <!-- The description is optional and defaults to the name -->
+    <description>PLG_SYSTEM_FUTUREPUBLISH_XML_DESCRIPTION</description>        <scriptfile>plg_futurepublish.script.php</scriptfile>
+
+    <files>
+        <filename plugin="futurepublish">futurepublish.php</filename>
+        <filename>index.html</filename>
+        <filename>fields_definition.xml</filename>
+        <folder>js</folder>
+        <folder>language</folder>
+    </files>
+</extension>
