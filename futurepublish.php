@@ -59,6 +59,12 @@ class plgSystemFuturePublish extends JPlugin
             return;
         }
         
+        $fields_definition_file = __DIR__ . '/fields_definition.xml';
+        if (!file_exists($fields_definition_file)) {
+            JError::raiseNotice(500, 'Coultd not find file: ' . $fields_definition_file);
+            return false;
+        }
+        
         $fields_definition_xml = file_get_contents(__DIR__ . '/fields_definition.xml');
         $fields_definition     = new SimpleXMLElement($fields_definition_xml);
         $d = $fields_definition;
