@@ -95,7 +95,17 @@ class plgSystemFuturePublishInstallerScript
             // hard-coded form definition file, it's possible that the title, name or order of the
             // Custom Fields will be changed by the user, and we need to have something that's
             // immutable so that code can run properly. Without this, things could break.
-            file_put_contents(JPATH_PLUGINS . '/system/futurepublish/fields_id_name_map.json', json_encode($new_fields));
+            $fields_definition_dir = JPATH_PLUGINS . '/system/futurepublish/';
+            
+            var_dump(is_writable($fields_definition_dir)); #exit;
+
+            if (!is_writable($fields_definition_dir)) {
+                echo 'Dir not writable: ' . $fields_definition_dir;
+                exit;  
+            }
+            file_put_contents($fields_definition_dir . '/fields_id_name_map.json', json_encode($new_fields));
+            
+            exit;
         }
 
         // Note: if there's already a group of the correct name, I'm assuming it already has the
