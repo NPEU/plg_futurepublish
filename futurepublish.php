@@ -59,18 +59,18 @@ class plgSystemFuturePublish extends JPlugin
             return;
         }
         
-        $fields_definition_file = __DIR__ . '/fields_definition.xml';
-        if (!file_exists($fields_definition_file)) {
-            JError::raiseNotice(500, 'Coultd not find file: ' . $fields_definition_file);
-            return false;
-        }
-        
         $fields_definition_xml = file_get_contents(__DIR__ . '/fields_definition.xml');
         $fields_definition     = new SimpleXMLElement($fields_definition_xml);
         $d = $fields_definition;
 
         // Make a list of all valid fields:
-        $fields_id_name_map = json_decode(file_get_contents(JPATH_PLUGINS . '/system/futurepublish/fields_id_name_map.json'), true);
+        $fields_map_file = JPATH_PLUGINS . '/system/futurepublish/fields_id_name_map.json';
+        if (!file_exists($fields_map_file)) {
+            JError::raiseNotice(500, 'Coultd not find file: ' . $fields_map_file);
+            return false;
+        }
+        
+        $fields_id_name_map = json_decode(file_get_contents($fields_map_file), true);
         $future_fields = array();
 
         foreach ($item->jcfields as $jcfield) {
