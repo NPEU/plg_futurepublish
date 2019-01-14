@@ -43,8 +43,7 @@ class plgSystemFuturePublish extends JPlugin
         }
 
         $this->fields_id_name_map = json_decode(file_get_contents($this->fields_map_file), true);
-
-
+        
         foreach ($item->jcfields as $jcfield) {
             if ($jcfield->group_title == $d->group_title && array_key_exists($jcfield->id, $this->fields_id_name_map)) {
                 $this->future_fields[$this->fields_id_name_map[$jcfield->id]] = $jcfield->rawvalue;

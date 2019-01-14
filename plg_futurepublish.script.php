@@ -99,7 +99,7 @@ class plgSystemFuturePublishInstallerScript
 
             if (!is_writable($fields_definition_dir)) {
                 echo 'Dir not writable: ' . $fields_definition_dir;
-                exit;  
+                exit;
             }
             file_put_contents($fields_definition_dir . '/fields_id_name_map.json', json_encode($new_fields));
         }
