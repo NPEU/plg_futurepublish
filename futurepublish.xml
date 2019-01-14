@@ -13,6 +13,11 @@
     <version>1.1.0</version>
     <!-- The description is optional and defaults to the name -->
     <description>PLG_SYSTEM_FUTUREPUBLISH_XML_DESCRIPTION</description>
+
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="mod_brochure Update Site">https://raw.githubusercontent.com/NPEU/plg_futurepublish/master/update-manifest.xml</server>
+    </updateservers>
     
     <scriptfile>plg_futurepublish.script.php</scriptfile>
 
