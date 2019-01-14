@@ -219,4 +219,19 @@ class plgSystemFuturePublish extends JPlugin
 
         $document->addScript('/plugins/system/futurepublish/js/future-publish.js');
     }
+    
+    /**
+     * Hack for adding future-publish event listener to Joomla calendar custom field.
+     * Note I haven't found a way to do this in JS and the 'correct' way to specify event handlers
+     * is actually in the markup anyway, so more of a fudge and a hack.
+     *
+     */
+    public function onAfterRender()
+    {
+        $response     = JResponse::getBody();
+        $search       = 'id="jform_com_fields_future_publish_date"';
+        $replace      = 'onchange="FuturePublish.joomlaFieldCalendarUpdateAction()" id="jform_com_fields_future_publish_date"';
+        $response     = str_replace($search, $replace, $response);
+        JResponse::setBody($response);
+    }
 }
