@@ -1,5 +1,6 @@
 var FuturePublish = {
     'future_publish_group_id': false,
+    'future_date_in_future': null,
 
     'init': function () {
         FuturePublish.addCloneButton();
@@ -65,18 +66,28 @@ var FuturePublish = {
     'addQueueNotice': function () {
         $ = jQuery;
 
-        $('#general').prepend([
+        title = FuturePublish.future_date_in_future
+              ? 'Future content is queued.'
+              : 'Future content is queued with a date that is <strong>in the past</strong>.';
+
+        message = FuturePublish.future_date_in_future
+                ? 'Any changes made to the content here will be replaced by the future content at the future publish date/time.</p>'
+                : 'Any changes made to the content here will be replaced by the future content <strong>the next time the page is loaded</strong>.</p>';
+
+        notice = [
             '<div class="row-fluid future-publish-queue-notice">',
             '    <div class="alert alert-danger">',
             '       <h4 class="alert-heading">Warning</h4>',
             '       <div class="alert-message">',
-            '           <p>Future content is queued.<br/>',
-            '           Any changes made to the content here will be replaced by the future content at the future publish date/time.</p>',
+            '           <p>' + title + '</br>',
+            '           ' + message + '</p>',
             '           <p>See the \'Future Publishing\' tab for details.</p>',
             '       </div>',
             '   </div>',
             '</div>'
-        ].join("\n"));
+        ]
+
+        $('#item-form > .form-inline-header').after(notice.join("\n"));
 
         $('a[href="#' + FuturePublish.future_publish_group_id + '"]').append('<b class="future-publish-queue-notice"> (!)</b>');
     },
@@ -90,19 +101,30 @@ var FuturePublish = {
     'hasQueuedContent': function () {
         $ = jQuery;
 
-        // Check for future date: (e.g. 2019-01-30 11:54:48)
+
+        // (note I used to check if the date was a valid future date, but that's wrong,
+        // a date in the past can still be saved and the main content will be overwritten on the
+        // next page load without warning the user, so don't do that.)
+
         future_date = $('#jform_com_fields_future_publish_date').val();
+
+        // Check for future date in correct format: (e.g. 2019-01-30 11:54:48)
         if (future_date != '' && /\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}/.test(future_date)) {
+
+            // Valid format, now compare with 'now':
             future_timestamp = Math.floor((new Date(future_date)).getTime() / 1000);
             now_timestamp = Math.floor((new Date()).getTime() / 1000);
-            if (future_timestamp <= now_timestamp) {
-                return false;
+            if (future_timestamp >= now_timestamp) {
+                FuturePublish.future_date_in_future = true;
+                return true;
+            } else {
+                FuturePublish.future_date_in_future = false;
+                return true;
             }
-        } else {
-            return false;
         }
 
-        return true;
+        FuturePublish.future_date_in_future = null;
+        return false;
 
         // Hmmm. Future date is all that's required. Empty future content just means that the
         // article will be updated with nothing (empty).
