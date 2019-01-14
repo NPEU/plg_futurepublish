@@ -16,4 +16,20 @@
             <tag>stable</tag>
         </tags>
     </update>
+        <update>
+        <name>NPEU: plg_futurecontent</name>
+        <description>Joomla! plg_futurecontent plugin</description>
+        <element>plg_futurecontent</element>
+        <type>plugin</type>
+        <version>1.1.0</version>
+        <client>site</client>
+        <infourl title="NPEU: mod_brochure">https://github.com/NPEU/plg_futurecontent/releases/tag/1.1.0</infourl>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/NPEU/plg_futurecontent/archive/v1.1.0.zip</downloadurl>
+        </downloads>
+        <targetplatform name="joomla" />
+        <tags>
+            <tag>stable</tag>
+        </tags>
+    </update>
 </updates>
