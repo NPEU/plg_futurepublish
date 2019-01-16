@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Joomla.Plugins
+ * @package     Joomla.Plugin
  * @subpackage  System.Futurepublish
  *
  * @copyright   Copyright (C) NPEU 2018.
