@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Plugin
- * @subpackage  System.Futurepublish
+ * @subpackage  System.FuturePublish
  *
  * @copyright   Copyright (C) NPEU 2018.
  * @license     MIT License; see LICENSE.md
