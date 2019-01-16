@@ -25,6 +25,7 @@
         <filename plugin="futurepublish">futurepublish.php</filename>
         <filename>index.html</filename>
         <filename>fields_definition.xml</filename>
+        <filename>update-manifest.xml</filename>
         <folder>js</folder>
         <folder>language</folder>
     </files>
