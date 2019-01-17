@@ -181,11 +181,11 @@ class plgSystemFuturePublish extends JPlugin
      * Checks we're loading an article form and adds necessary resources.
      *
      * @param   string   $context  The context of the content being passed to the plugin
-     * @param   object   &$data    The data object
+     * @param   object   $data     The data object
      *
      * @return  string|boolean  HTML string containing code for the votes if in com_content else boolean false
      */
-    public function onContentPrepareData($context, &$data)
+    public function onContentPrepareData($context, $data)
     {
         // KEEP THIS. It's useful for understanding what's going on.
         /*
