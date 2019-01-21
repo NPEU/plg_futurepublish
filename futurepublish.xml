@@ -10,7 +10,7 @@
     <license>MIT License; see LICENSE.md</license>
 
     <!--  The version string is recorded in the components table -->
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <!-- The description is optional and defaults to the name -->
     <description>PLG_SYSTEM_FUTUREPUBLISH_XML_DESCRIPTION</description>
 
@@ -25,7 +25,6 @@
         <filename plugin="futurepublish">futurepublish.php</filename>
         <filename>index.html</filename>
         <filename>fields_definition.xml</filename>
-        <filename>update-manifest.xml</filename>
         <folder>js</folder>
         <folder>language</folder>
     </files>
