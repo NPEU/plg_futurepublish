@@ -68,8 +68,7 @@
             <tag>stable</tag>
         </tags>
     </update>
-    </update>
-        <update>
+    <update>
         <name>NPEU: plg_futurepublish</name>
         <description>Joomla! plg_futurepublish plugin</description>
         <element>futurepublish</element>
