@@ -11,6 +11,10 @@ defined('_JEXEC') or die;
 
 /**
  * A plugin to allow new content to be published at a future time.
+ *
+ * Note if this doesn't appear to work, make sure teh plugin ordering is to 'last'
+ * This plugin requires access to jcfields, and that's added by a plugin itself, so we need to make
+ * sure that it runs first.
  */
 class plgSystemFuturePublish extends JPlugin
 {
@@ -38,7 +42,7 @@ class plgSystemFuturePublish extends JPlugin
         // Make a list of all valid fields:
         $this->fields_map_file = JPATH_PLUGINS . '/system/futurepublish/fields_id_name_map.json';
         if (!file_exists($this->fields_map_file)) {
-            JError::raiseNotice(500, 'Coultd not find file: ' . $this->fields_map_file);
+            JError::raiseNotice(500, 'Could not find file: ' . $this->fields_map_file);
             return false;
         }
 
