@@ -39,17 +39,37 @@ var FuturePublish = {
 
         // Add click handler
         $('#clone_future_content').click(function(e){
+
+            console.log(window.Joomla.editors.instances);
+
+            // This is CKEditor specific.
+            // Ideally I'd fix CKEditor to use the proper Joomla.editors object, then change this
+            // to make it universal.
+            var current_editor = CKEDITOR.instances.jform_articletext;
+            var future_editor  = CKEDITOR.instances.jform_com_fields_future_content;
+
+            future_editor.setData(current_editor.getData());
+
+            // I have no idea why the above code removes the ck_wym class, but it does, so adding
+            // it back in.
+            $future_editor_body = FuturePublish.getFutureEditorBody();
+            $future_editor_body.addClass('ck_wym');
+
             e.preventDefault();
+            return false;
+
+
+
 
             // Get current content:
-            $current_editor_body = FuturePublish.getCurrentEditorBody().clone();
+            //$current_editor_body = FuturePublish.getCurrentEditorBody().clone();
 
             // Set Future content:
-            $future_editor_body = FuturePublish.getFutureEditorBody();
+            //$future_editor_body = FuturePublish.getFutureEditorBody();
 
-            $future_editor_body.empty().append($current_editor_body.contents());
+            //$future_editor_body.empty().append($current_editor_body.contents());
 
-            return false;
+            //return false;
         });
     },
 
