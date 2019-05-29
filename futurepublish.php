@@ -11,10 +11,6 @@ defined('_JEXEC') or die;
 
 /**
  * A plugin to allow new content to be published at a future time.
- *
- * Note if this doesn't appear to work, make sure teh plugin ordering is to 'last'
- * This plugin requires access to jcfields, and that's added by a plugin itself, so we need to make
- * sure that it runs first.
  */
 class plgSystemFuturePublish extends JPlugin
 {
@@ -22,6 +18,7 @@ class plgSystemFuturePublish extends JPlugin
     protected $fields_map_file;
     protected $fields_id_name_map;
     protected $future_fields = array();
+    protected $item = false;
 
     /**
      * Checks for queued / future content.
@@ -47,7 +44,7 @@ class plgSystemFuturePublish extends JPlugin
         }
 
         $this->fields_id_name_map = json_decode(file_get_contents($this->fields_map_file), true);
-        
+
         foreach ($item->jcfields as $jcfield) {
             if ($jcfield->group_title == $d->group_title && array_key_exists($jcfield->id, $this->fields_id_name_map)) {
                 $this->future_fields[$this->fields_id_name_map[$jcfield->id]] = $jcfield->rawvalue;
@@ -86,29 +83,15 @@ class plgSystemFuturePublish extends JPlugin
         $item->fulltext  = $fulltext;
         $item->text      = implode(' ', $text);
 
+        $this->item      = $item;
+        return;
 
-        // And save it to the database:
-        // Note we're actually re-loading it from the database first so we can use all the JTable
-        // functionality, including automatic versions.
-        $article = JTable::getInstance('Content');
-        $article->load($item->id);
 
-        $article->introtext = $introtext;
-        $article->fulltext  = $fulltext;
-
-        if (!$article->check()) {
-            JError::raiseNotice(500, $article->getError());
-            return false;
-        }
-
-        if (!$article->store()) {
-            JError::raiseNotice(500, $article->getError());
-            return false;
-        }
 
         // Can't load Admin version of ContentModelArticle because Site version is needed to load
         // content properly, but this means there's no 'save' method available for updating the
-        // article. I can't find a way round this, so resorting to using database directly.
+        // article. I can't find a way round this, so we're actually re-loading it from the database
+        // first so we can use all the JTable functionality, including automatic versions.
 
         $db = JFactory::getDbo();
 
@@ -176,8 +159,8 @@ class plgSystemFuturePublish extends JPlugin
         if ($this->checkFutureContent($context, $item, $params, $page)) {
             // Ok, so the time has passed, we need to update the article:
             $this->updateArticle($context, $item, $params, $page);
-            return;
         }
+        return;
     }
 
 
@@ -222,7 +205,7 @@ class plgSystemFuturePublish extends JPlugin
 
         $document->addScript('/plugins/system/futurepublish/js/future-publish.js');
     }
-    
+
     /**
      * Hack for adding future-publish event listener to Joomla calendar custom field.
      * Note I haven't found a way to do this in JS and the 'correct' way to specify event handlers
@@ -236,5 +219,46 @@ class plgSystemFuturePublish extends JPlugin
         $replace      = 'onchange="FuturePublish.joomlaFieldCalendarUpdateAction()" id="jform_com_fields_future_publish_date"';
         $response     = str_replace($search, $replace, $response);
         JResponse::setBody($response);
+
+        //return;
+
+        if (!$this->item) {
+            return;
+        }
+
+        // Can't load Admin version of ContentModelArticle because Site version is needed to load
+        // content properly, but this means there's no 'save' method available for updating the
+        // article. I can't find a way round this, so we're actually re-loading it from the database
+        // first so we can use all the JTable functionality, including automatic versions.
+
+        $article = JTable::getInstance('Content');
+        $article->load($this->item->id);
+
+        $article->introtext = $this->item->introtext;
+        $article->fulltext  = $this->item->fulltext;
+
+        if (!$article->check()) {
+            JError::raiseNotice(500, $article->getError());
+            return false;
+        }
+
+        if (!$article->store()) {
+            JError::raiseNotice(500, $article->getError());
+            return false;
+        }
+
+        // Future content now published, so delete custom field data:
+
+        $db = JFactory::getDbo();
+
+        // And clear the Custom Field values:
+        $sql = "DELETE FROM `#__fields_values` WHERE `field_id` = " . array_keys($this->fields_id_name_map, 'future-publish-date')[0] . " AND `item_id` = " . $this->item->id;
+        $db->setQuery($sql);
+        $db->query();
+
+        $sql = "DELETE FROM `#__fields_values` WHERE `field_id` = " . array_keys($this->fields_id_name_map, 'future-content')[0] . " AND `item_id` = " . $this->item->id;
+        $db->setQuery($sql);
+        $db->query();
+
     }
 }
