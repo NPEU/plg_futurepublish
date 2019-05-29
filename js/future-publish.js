@@ -52,9 +52,10 @@ var FuturePublish = {
 
             // I have no idea why the above code removes the ck_wym class, but it does, so adding
             // it back in.
-            $future_editor_body = FuturePublish.getFutureEditorBody();
-            $future_editor_body.addClass('ck_wym');
-
+            window.setTimeout(function(){
+                $future_editor_body = FuturePublish.getFutureEditorBody();
+                $future_editor_body.addClass('ck_wym');
+            }, 1500);
             e.preventDefault();
             return false;
 
